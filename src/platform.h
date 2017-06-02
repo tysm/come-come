@@ -8,6 +8,33 @@
 #   error Unsupported platform
 #endif
 
+typedef enum key_id
+{
+    KEY_UP,
+    KEY_DOWN,
+    KEY_LEFT,
+    KEY_RIGHT,
+    KEY_ENTER,
+    KEY_ESCAPE,
+    KEY_MAX
+} key_id_t;
+
+/**
+ * Retorna verdadeiro se a tecla especifica começou a ser apertada agora, falso caso esteja
+ * sendo apertada a mais tempo ou não está apertada.
+ */
+extern int keyhit(key_id_t k);
+
+/**
+ * Retorna verdadeiro se a tecla especifica está apertada, falso caso contrário.
+ */
+extern int keyhold(key_id_t k);
+
+/**
+ * Atualiza o estado das teclas no terminal.
+ */
+extern void cli_update_keys(void);
+
 /**
  * Aguarda por alguns milisegundos até o próximo tick.
  * Uso exclusivo para o frontend em terminal.

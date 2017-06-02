@@ -3,12 +3,73 @@
 
 #if defined(PLATFORM_WIN32)
 #   include <windows.h>
+#   include <conio.h>
 #elif defined(PLATFORM_UNIX)
 #   include <unistd.h>
 #   include <time.h>
 #else
 #   error Unsupported platform
 #endif
+
+static char keys_now[KEY_MAX];
+static char keys_before[KEY_MAX];
+
+int keyhit(key_id_t k)
+{
+    return keys_now[k] && !keys_before[k];
+}
+
+int keyhold(key_id_t k)
+{
+    return keys_now[k];
+}
+
+void cli_update_keys(void)
+{
+    memcpy(keys_before, keys_now, sizeof(keys_before));
+    memset(keys_now, 0, sizeof(keys_now));
+
+#if defined(PLATFORM_WIN32)
+    if(_kbhit())
+    {
+        int c1;
+        
+        c1 = _getch();
+        if(c1 == 224 && _kbhit())
+        {
+            switch(_getch())
+            {
+                case 72:
+                    keys_now[KEY_UP] = 1;
+                    break;
+                case 80:
+                    keys_now[KEY_DOWN] = 1;
+                    break;
+                case 75:
+                    keys_now[KEY_LEFT] = 1;
+                    break;
+                case 77:
+                    keys_now[KEY_RIGHT] = 1;
+                    break;
+            }
+        }
+        else
+        {
+            switch(c1)
+            {
+                case 27:
+                    keys_now[KEY_ESCAPE] = 1;
+                    break;
+                case 13:
+                    keys_now[KEY_ENTER] = 1;
+                    break;
+            }
+        }
+    }
+#elif defined(PLATFORM_UNIX)
+#   error cli_update_keys for Unix Systems not implemented
+#endif
+}
 
 void cli_render(char screen[24][80])
 {
