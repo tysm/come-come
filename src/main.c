@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#include "platform.c"
+#include "platform.h"
 #include "control.c"
 
 typedef struct player
