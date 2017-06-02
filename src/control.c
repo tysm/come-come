@@ -12,13 +12,11 @@ void player_control(float *x, float *y, char screen[24][80]){
 	int tecla, intx=*x, inty=*y;
 	//talvez seja bom colocar um fflush ou __fpurge aqui
 	tecla=getch();
-	
-	while(){
-		if (tecla==UP) intx--;
-		else if (tecla==DOWN) intx++;
-		else if (tecla==RIGHT) inty++;
-		else if (tecla==LEFT) inty--;
-	}
+	screen[intx][inty]=' ';
+	if (tecla==UP) intx--;
+	else if (tecla==DOWN) intx++;
+	else if (tecla==RIGHT) inty++;
+	else if (tecla==LEFT) inty--;
 	screen[intx][inty]='@';
 	
 	//retornando valor para a struct que esta em float
