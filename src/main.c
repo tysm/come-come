@@ -76,3 +76,4 @@ void render(void)
 void sync(void)
 {
     cli_sync();
+}
