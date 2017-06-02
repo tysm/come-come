@@ -12,7 +12,6 @@ void player_control(float *x, float *y, char screen[24][80]){
 	int tecla, intx=*x, inty=*y;
 	//talvez seja bom colocar um fflush ou __fpurge aqui
 	tecla=getch();
-	screen[intx][inty]=' ';
 	if (tecla==UP) intx--;
 	else if (tecla==DOWN) intx++;
 	else if (tecla==RIGHT) inty++;
