@@ -22,7 +22,7 @@ void cli_render(char screen[24][80])
 
     for(i = 0; i < 24; ++i)
         screen[i][79] = '\n';
-        
+	
     fwrite(screen, sizeof(char), 24*80, stdout);
     fflush(stdout);
 }

@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#include "platform.h"
+#include "platform.c"
 
 typedef struct player
 {
@@ -50,9 +50,21 @@ void update(void)
  */
 void render(void)
 {
-    char screen[24][80];
-    
-    memset(screen, '.', sizeof(char)*24*80);
+    //char screen[24][80];
+	
+	//kimblee edit-lixo
+    int i;
+	char screen[24][80];
+	memset(screen[0], '_', sizeof(char)*79);
+	for (i=1; i<24; i++){
+		screen[i][0]='|';
+		screen[i][78]='|';
+		memset(&screen[i][1], ' ', sizeof(char)*77);
+	}
+	memset(&screen[23][1], '_', sizeof(char)*77);
+    //end edit
+	
+	//memset(screen, '.', sizeof(char)*24*80);
     memcpy(&screen[2][5], "Exemplo", 7);
     
     cli_render(screen);
@@ -64,4 +76,3 @@ void render(void)
 void sync(void)
 {
     cli_sync();
-}
