@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "platform.h"
-#include "control.h"
 
 typedef struct player
 {
-    float x, y;
+    float x, y, x_dir, y_dir;
 } player_t;
 
 player_t* player;
@@ -14,24 +13,25 @@ void player_init(player_t* p)
 {
     p->x = 0.0f;
     p->y = 0.0f;
+	p->x_dir = 0.0f;
+	p->y_dir = 0.0f;
 }
 
 void update(void);
-void render(player_t *p);
-void f_render(void);
+void render(void);
 void sync(void);
 
 int main(int argc, char* argv[])
 {
     player_t p1;
     player_init(&p1);
-    f_render();
     player = &p1;
     
     while(1)
     {
+		cli_update_keys();
         update();
-        render(&p1);
+        render();
         sync();
     }
     
@@ -44,16 +44,41 @@ int main(int argc, char* argv[])
  */
 void update(void)
 {
+	if(keyhold(KEY_UP))
+	{
+		player->x_dir = 0.0f;
+		player->y_dir = -1.0f; 
+	}
+	else if(keyhold(KEY_DOWN))
+	{
+		player->x_dir = 0.0f; 
+		player->y_dir = 1.0f; 
+	}
+	else if(keyhold(KEY_LEFT))
+	{
+		player->x_dir = -1.0f;
+		player->y_dir = 0.0f; 
+	}
+	else if(keyhold(KEY_RIGHT))
+	{
+		player->x_dir = 1.0f;
+		player->y_dir = 0.0f; 
+	}
+	player->x += player->x_dir;
+	player->y += player->y_dir;
 }
 
 
 /**
  * Renderiza o estado atual do jogo.
  */
-void render(player_t *p)
+void render(void)
 {
     int i;
 	char screen[24][80];
+	
+	int px = (int)player->y;
+	int py = (int)player->x;
 
 	memset(screen[0], '_', sizeof(char)*79);
 	for (i=1; i<24; i++){
@@ -62,30 +87,13 @@ void render(player_t *p)
 		memset(&screen[i][1], ' ', sizeof(char)*77);
 	}
 	memset(&screen[23][1], '_', sizeof(char)*77);
-	
-    memcpy(&screen[2][5], "Exemplo", 7);
-    player_control(&(*p).x, &(*p).y, screen);
-    cli_render(screen);
-}
-/**
-*  Primeiro render
-*/
-void f_render(void)
-{
-    int i;
-	char screen[24][80];
-	memset(screen[0], '_', sizeof(char)*79);
-	for (i=1; i<24; i++){
-		screen[i][0]='|';
-		screen[i][78]='|';
-		memset(&screen[i][1], ' ', sizeof(char)*77);
-	}
-	memset(&screen[23][1], '_', sizeof(char)*77);
-	
-    memcpy(&screen[2][5], "Exemplo", 7);
+
+	if(px >= 0 && px < 24 && py >= 0 && py < 80)
+		screen[px][py] = '@';
 	
     cli_render(screen);
 }
+
 
 /**
  * Aguarda um pouco antes do próximo ciclo.
