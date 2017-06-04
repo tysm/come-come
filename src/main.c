@@ -64,8 +64,9 @@ void update(void)
 		player->x_dir = 1.0f;
 		player->y_dir = 0.0f; 
 	}
-	player->x += player->x_dir;
-	player->y += player->y_dir;
+	/*modifiquei aqui*/
+	if ((player->x_dir<0&&player->x>1)||(player->x_dir>0&&player->x<77)) player->x += player->x_dir;
+	if ((player->y_dir<0&&player->y>1)||(player->y_dir>0&&player->y<22)) player->y += player->y_dir;
 }
 
 
@@ -80,16 +81,16 @@ void render(void)
 	int px = (int)player->y;
 	int py = (int)player->x;
 
-	memset(screen[0], '_', sizeof(char)*79);
+	memset(screen[0], '#', sizeof(char)*79);
 	for (i=1; i<24; i++){
-		screen[i][0]='|';
-		screen[i][78]='|';
+		screen[i][0]='#';
+		screen[i][78]='#';
 		memset(&screen[i][1], ' ', sizeof(char)*77);
 	}
-	memset(&screen[23][1], '_', sizeof(char)*77);
+	memset(&screen[23][1], '#', sizeof(char)*77);
 
-	if(px >= 0 && px < 24 && py >= 0 && py < 80)
-		screen[px][py] = '@';
+	/*modifiquei aqui 'if(px >= 0 && px < 24 && py >= 0 && py < 80)'*/
+	screen[px][py] = '@';
 	
     cli_render(screen);
 }
