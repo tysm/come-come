@@ -1,11 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "platform.h"
+#include "entities.h"
 
-typedef struct player
-{
-    float x, y, x_dir, y_dir;
-} player_t;
 static char map[24][80]={
 {35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,'\0'},
 {35,' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',35,'\0'},
@@ -34,25 +32,34 @@ static char map[24][80]={
 };
 
 
-player_t* player;
+entity_t* player;
+entity_t* player_list = NULL;
 
-void player_init(player_t* p)
-{
-    p->x = 1.0f;
-    p->y = 1.0f;
-	p->x_dir = 0.0f;
-	p->y_dir = 0.0f;
-}
+entity_t* enemy_list = NULL;
 
 void update(void);
 void render(void);
 void sync(void);
 
+static void render_to_buffer(char screen[24][80], int px, int py, char c);
+
 int main(int argc, char* argv[])
 {
-    player_t p1;
-    player_init(&p1);
-    player = &p1;
+    int i;
+    entity_t* ent;
+
+    srand(time(0));
+
+    player = entity_alloc(&player_list, ENTITY_PLAYER1);
+    player->x = 1.0f;
+    player->y = 1.0f;
+    
+    for(i = ENTITY_GHOST_START; i <= ENTITY_GHOST_END; ++i)
+    {
+        ent = entity_alloc(&enemy_list, i);
+        ent->x = (1.0f + i * 4.0f);
+        ent->y = (1.0f + i * 4.0f);
+    }
     
     while(1)
     {
@@ -61,6 +68,11 @@ int main(int argc, char* argv[])
         render();
         sync();
     }
+    
+    entity_free(&player_list, player);
+    
+    for(ent = enemy_list; ent; ent = ent->next)
+        entity_free(&enemy_list, ent);
     
     return 0;
 }
@@ -101,26 +113,36 @@ void update(void)
 	}
 }
 
-
 /**
  * Renderiza o estado atual do jogo.
  */
 void render(void)
 {
+    
+
     int i, j;
 	char screen[24][80];
+	entity_t* ent;
 	
-	int px = (int)player->y;
-	int py = (int)player->x;
-
 	for (i=0; i<24; i++){
 		for (j=0; j<80; j++){
 			screen[i][j]=map[i][j];
 		}
 	}
-	screen[px][py] = '@';
+	
+	for(ent = enemy_list; ent; ent = ent->next)
+        render_to_buffer(screen, (int)ent->y, (int)ent->x, '&');
+	
+	for(ent = player_list; ent; ent = ent->next)
+        render_to_buffer(screen, (int)ent->y, (int)ent->x, '@');
 	
     cli_render(screen);
+}
+
+void render_to_buffer(char screen[24][80], int px, int py, char c)
+{
+    if(px >= 0 && px < 24 && py >= 0 && py < 80)
+        screen[px][py] = c;
 }
 
 
