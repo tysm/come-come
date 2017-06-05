@@ -6,6 +6,7 @@ typedef struct player
 {
     float l_x, l_y, x, y, x_dir, y_dir;
 } player_t;
+
 static char map[24][80]={
 {35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,'\0'},
 {35,' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',35,'\0'},
@@ -33,7 +34,6 @@ static char map[24][80]={
 {35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,'\0'}
 };
 
-
 player_t* player;
 
 void player_init(player_t* p)
@@ -47,21 +47,12 @@ void player_init(player_t* p)
 }
 
 void update(void);
-void render(char screen[24][80]);
+void render(void);
 void sync(void);
 
 int main(int argc, char* argv[])
 {
 	player_t p1;
-	/*pretendo transformar em função: mkscreen*/
-	int i, j;
-	char screen[24][80];
-	for (i=0; i<24; i++){
-		for (j=0; j<80; j++){
-			screen[i][j]=map[i][j];
-		}
-	}
-	/*end*/
 	
     player_init(&p1);
     player = &p1;
@@ -70,7 +61,7 @@ int main(int argc, char* argv[])
     {
 		cli_update_keys();
         update();
-        render(screen);
+        render();
         sync();
     }
     
@@ -120,21 +111,21 @@ void update(void)
 /**
  * Renderiza o estado atual do jogo.
  */
-void render(char screen[24][80])
+void render(void)
 {
-    /*int i, j;
-	char screen[24][80];*/
+    int i, j;
+	char screen[24][80];
 	int pl_x = (int)player->l_y;
 	int pl_y = (int)player->l_x;
 	int px = (int)player->y;
 	int py = (int)player->x;
-
-	/*for (i=0; i<24; i++){
+	
+	map[pl_x][pl_y] = ' ';
+	for (i=0; i<24; i++){
 		for (j=0; j<80; j++){
 			screen[i][j]=map[i][j];
 		}
-	}*/
-	screen[pl_x][pl_y] = ' ';
+	}
 	screen[px][py] = '@';
 	
     cli_render(screen);
