@@ -71,7 +71,7 @@ void cli_update_keys(void)
 #endif
 }
 
-void cli_render(char screen[24][80], char life[3], float points)
+void cli_render(char screen[24][80])
 {
     int i;
 
@@ -85,9 +85,6 @@ void cli_render(char screen[24][80], char life[3], float points)
         screen[i][79] = '\n';
 	
     fwrite(screen, sizeof(char), 24*80, stdout);
-	printf("Life: ");
-	fwrite(life, sizeof(char), 3, stdout);
-	printf(" Points: %.2f\n", points);
     fflush(stdout);
 }
 
