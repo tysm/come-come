@@ -83,6 +83,8 @@ int main(int argc, char* argv[])
  */
 void update(void)
 {
+    entity_t *pl, *ent;
+
 	if(keyhold(KEY_UP))
 	{
 		player->x_dir = 0.0f;
@@ -111,6 +113,18 @@ void update(void)
 		player->x -= player->x_dir;
 		player->y -= player->y_dir;
 	}
+	
+	for(pl = player_list; pl; pl = pl->next)
+	{
+        for(ent = enemy_list; ent; ent = ent->next)
+        {
+            if(entity_collides(pl, ent))
+            {
+                /* TODO game over para o player `pl` */
+                exit(0); /* Nunca façam isso em casa! Tá errado. */
+            }
+        }
+	}
 }
 
 /**
@@ -118,8 +132,6 @@ void update(void)
  */
 void render(void)
 {
-    
-
     int i, j;
 	char screen[24][80];
 	entity_t* ent;

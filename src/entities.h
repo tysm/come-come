@@ -43,3 +43,8 @@ extern entity_t* entity_alloc(entity_t** head, entity_type_t type);
  */
 extern void entity_free(entity_t** head, entity_t* p);
 
+/**
+ * Testa se a entidade `a` está colidindo com a entidade `b`.
+ */
+extern int entity_collides(entity_t* a, entity_t* b);
+

@@ -35,6 +35,15 @@ void entity_free(entity_t** head, entity_t* p)
     free(p);
 }
 
+
+int entity_collides(entity_t* a, entity_t* b)
+{
+    /* TODO colisão por interseção de cubos. */
+    if((int)a->x == (int)b->x && (int)a->y == (int)b->y)
+        return 1;
+    return 0;
+}
+
 void entity_add(entity_t** head, entity_t* other)
 {
     /* A entidade sendo adicionada não pode estar encadeada há uma lista. */
