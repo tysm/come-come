@@ -29,7 +29,7 @@ typedef struct entity
     struct entity *next, *prev;
     
     entity_type_t type;
-    float x, y, x_dir, y_dir;
+    float x, y, x_dir, y_dir, l_x, l_y;
 
 } entity_t;
 
