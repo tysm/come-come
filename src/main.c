@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
     player->l_x = 1.0f;
     player->l_y = 1.0f;
     points_and_life.points = 0.0f;
-	points_and_life.life=3;
+	points_and_life.life=9;
 	
     for(i = ENTITY_GHOST_START; i <= ENTITY_GHOST_END; ++i)
     {
@@ -174,10 +174,10 @@ void render(void)
 	for(ent = player_list; ent; ent = ent->next)
         render_to_buffer(screen, (int)ent->y, (int)ent->x, '@');
 	
-	for(i = 1; i <= 10; ++i)
+	for(i = 1; i <= 9; ++i)
         life[i-1] = (points_and_life.life >= i? '@' : ' ');
     life[9] = '\0';
-    
+    memset(&screen[23][15], ' ', sizeof(char)*64);
     i = sprintf(&screen[23][0], "Life: %s  Points: %.2f", life, points_and_life.points);
     screen[23][0+i] = ' ';
 	
