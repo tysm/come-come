@@ -4,6 +4,12 @@
 #include "platform.h"
 #include "entities.h"
 
+typedef struct points_and_life {
+	int max_life;
+	char life[3];
+	float points;
+} pal_t;
+
 static char map[24][80]={
 {35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,'\0'},
 {35,' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',35,'\0'},
@@ -36,6 +42,8 @@ entity_t* player_list = NULL;
 
 entity_t* enemy_list = NULL;
 
+pal_t points_and_life;
+
 void update(void);
 void render(void);
 void sync(void);
@@ -46,15 +54,19 @@ int main(int argc, char* argv[])
 {
     int i;
     entity_t* ent;
-
     srand(time(0));
-
+	
     player = entity_alloc(&player_list, ENTITY_PLAYER1);
     player->x = 1.0f;
     player->y = 1.0f;
     player->l_x = 1.0f;
     player->l_y = 1.0f;
-    
+    points_and_life.points = 0.0f;
+	for (i=0; i<3; i++){
+		points_and_life.life[i]=64;
+	}
+	points_and_life.max_life=3;
+	
     for(i = ENTITY_GHOST_START; i <= ENTITY_GHOST_END; ++i)
     {
         ent = entity_alloc(&enemy_list, i);
@@ -113,6 +125,9 @@ void update(void)
 		player->x -= player->x_dir;
 		player->y -= player->y_dir;
 	} else {
+		if (map[(int)player->y][(int)player->x]==42){
+			points_and_life.points += 100.0f;
+		}
 		player->l_x = player->x - player->x_dir;
 		player->l_y = player->y - player->y_dir;
 	}
@@ -123,9 +138,17 @@ void update(void)
         {
             if(entity_collides(pl, ent))
             {
-                /* TODO game over para o player `pl` */
-                exit(0); /* Nunca façam isso em casa! Tá errado. */
-            }
+				points_and_life.max_life-=1;
+				points_and_life.life[points_and_life.max_life]='\0';
+				player->x = 1.0f;
+				player->y = 1.0f;
+				player->x_dir = 0.0f;
+				player->y_dir = 0.0f;
+				if (points_and_life.max_life==0){
+					/* TODO game over para o player `pl` */
+					exit(0);/*  Nunca façam isso em casa! Tá errado. */
+				}
+			}
         }
     }
 }
@@ -141,8 +164,6 @@ void render(void)
 	
 	int pl_x = (int)player->l_y;
 	int pl_y = (int)player->l_x;
-	int px = (int)player->y;
-	int py = (int)player->x;
 	
 	map[pl_x][pl_y] = ' ';
 
@@ -158,7 +179,7 @@ void render(void)
 	for(ent = player_list; ent; ent = ent->next)
         render_to_buffer(screen, (int)ent->y, (int)ent->x, '@');
 	
-    cli_render(screen);
+    cli_render(screen, points_and_life.life, points_and_life.points);
 }
 
 void render_to_buffer(char screen[24][80], int px, int py, char c)

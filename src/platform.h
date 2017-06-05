@@ -45,4 +45,4 @@ extern void cli_sync(void);
  * Limpa e renderiza os caracteres especificados no terminal.
  * Usando 24x80 seguindo o padrão VT200.
  */
-extern void cli_render(char screen[24][80]);
+extern void cli_render(char screen[24][80], char life[3], float points);
