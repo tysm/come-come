@@ -162,7 +162,7 @@ void render(void)
 	
 	map[pl_x][pl_y] = ' ';
 
-	for (i=0; i<24; i++){
+	for (i=0; i<23; i++){
 		for (j=0; j<80; j++){
 			screen[i][j]=map[i][j];
 		}
@@ -177,7 +177,6 @@ void render(void)
 	for(i = 1; i <= 9; ++i)
         life[i-1] = (points_and_life.life >= i? '@' : ' ');
     life[9] = '\0';
-    memset(&screen[23][15], ' ', sizeof(char)*64);
     i = sprintf(&screen[23][0], "Life: %s  Points: %.2f", life, points_and_life.points);
     screen[23][0+i] = ' ';
 	
