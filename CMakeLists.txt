@@ -14,3 +14,7 @@ set(PACMAN_SRC
 )
 
 add_executable(come-come ${PACMAN_SRC})
+
+if(UNIX)
+    target_link_libraries(come-come ncurses)
+endif()

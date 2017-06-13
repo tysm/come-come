@@ -30,6 +30,8 @@ extern int keyhit(key_id_t k);
  */
 extern int keyhold(key_id_t k);
 
+extern void cli_init_keys(void);
+
 /**
  * Atualiza o estado das teclas no terminal.
  */

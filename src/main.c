@@ -47,6 +47,16 @@ int main(int argc, char* argv[])
     int i;
     entity_t* ent;
     srand(time(0));
+
+    cli_init_keys();
+
+    /*while(1)
+    {
+        int c = getch();
+        if(c != -1)
+            printw("%d\n", c);
+        refresh();
+    }*/
 	
     player = entity_alloc(&player_list, ENTITY_PLAYER1);
     player->x = 1.0f;
@@ -65,7 +75,7 @@ int main(int argc, char* argv[])
     {
 		cli_update_keys();
         update();
-        render();
+        /*render();*/
         sync();
     }
     
