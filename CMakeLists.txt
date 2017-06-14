@@ -11,6 +11,8 @@ set(PACMAN_SRC
     src/platform.h
     src/entities.c
     src/entities.h
+    src/maps.c
+    src/maps.h
 )
 
 add_executable(come-come ${PACMAN_SRC})
