@@ -6,9 +6,9 @@
 
 /**
 *Carrega o mapa de jogo
-**/
+*/
 void c_map(char map[23][80], int s_map){
-	FILE* file;
+	FILE *file;
 	int l, c, i, j;
 	char f_map[30];
 	
@@ -29,3 +29,8 @@ void c_map(char map[23][80], int s_map){
 		}
 	}
 }
+
+/**
+*Edita o mapa de jogo
+*/
+/*Criar editor Aqui*/
