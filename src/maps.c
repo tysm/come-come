@@ -151,7 +151,6 @@ void del_map(s_map){
 *Funções úteis
 */
 void m_update(char b_map[23][80], edit_cursor *cursor, int *g_out, int *n_food){
-	printf("DEBUG, ENTROU UPDATE\n");
 	if(keyhold(KEY_UP)){
 		(*cursor).y--;
 		if (!(*cursor).y)
@@ -178,21 +177,21 @@ void m_update(char b_map[23][80], edit_cursor *cursor, int *g_out, int *n_food){
 	else if ((*cursor).y==11&&(*cursor).x==79)
 		(*cursor).x = 0;
 	
-	if(keyhit(KEY_STAR)){
+	if(keyhold(KEY_STAR)){
 		b_map[(*cursor).y][(*cursor).x]='*';
 		(*n_food)++;
 	}
-	else if(keyhit(KEY_HASH)){
+	else if(keyhold(KEY_HASH)){
 		if (b_map[(*cursor).y][(*cursor).x]=='*')
 			(*n_food)--;
 		b_map[(*cursor).y][(*cursor).x]='#';
 	}
-	else if(keyhit(KEY_SPACE)){
+	else if(keyhold(KEY_SPACE)){
 		if (b_map[(*cursor).y][(*cursor).x]=='*')
 			(*n_food)--;
 		b_map[(*cursor).y][(*cursor).x]=' ';
 	}
-	else if(keyhit(KEY_ENTER)){
+	else if(keyhold(KEY_ENTER)){
 		*g_out=1;
 	}
 }
