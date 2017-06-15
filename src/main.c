@@ -7,6 +7,7 @@
 #include "maps.h"
 
 static char map[23][80];
+int n_food;
 
 entity_t* player;
 entity_t* player_list = NULL;
@@ -21,7 +22,7 @@ static void render_to_buffer(char screen[24][80], int px, int py, char c);
 
 int main(int argc, char* argv[])
 {
-    int i;
+    int i, extra, s_map, g_out;
     entity_t* ent;
     srand(time(0));
 	
@@ -39,13 +40,44 @@ int main(int argc, char* argv[])
     }
 	
 	/*
-	*função para selecionar o mapa,
+	*criar função para o player decidir
+	*se vai criar/editar/excluir/jogar
+	*se for jogar devemos pedir o parametro s_map
+	*para a função c_map carregar o mapa escolhido
+	*função de criar entra logo abaixo
+	*/
+	printf("1. Criar mapa;\n");
+	printf("2. editar mapa;\n");
+	printf("3. jogar;\n");
+	printf("4. sair;\n");
+	printf("Ola, selecione o que deseja fazer:");
+	scanf("%d", &extra);
+	g_out=0;
+	switch(extra){
+		case 1:
+			mk_edit_map(0);
+			break;
+		case 2:
+			list_map();
+			printf("selecione o que voce quer editar: ");
+			scanf("%d", &s_map);
+			mk_edit_map(s_map);
+			break;
+		case 3:
+			break;
+		case 4:
+			g_out=1;
+			break;
+	}
+	/*
+	*função para selecionar o mapa
+	*e pegar quantidade de comida,
 	*no momento esta selecionando o
 	*mapa 0, padrão.
 	*/
-    c_map(map, 0);
+    c_map(map, 0, &n_food);
     
-	while(1)
+	while(!g_out)
     {
 		cli_update_keys();
         update();
@@ -94,7 +126,6 @@ void update(void)
 		player->x = 78.0f;
 	else if (player->y==11&&player->x==78&&player->x_dir==1)
 		player->x = 0.0f;
-	
 	else {
 		player->x += player->x_dir;
 		player->y += player->y_dir;
@@ -106,6 +137,10 @@ void update(void)
 		if (map[(int)player->y][(int)player->x]==42){
 			player->points += 100.0f;
 			map[(int)player->y][(int)player->x]=' ';
+			n_food--;
+			if (!n_food)
+				/*TODO, mas isso é tipo um game over*/
+				exit(0);
 		}
 	}
 	
