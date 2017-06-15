@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 	*no momento esta selecionando o
 	*mapa 0, padrão.
 	*/
-    c_map(map, 0, &n_food);
+    c_map(map, 1, &n_food);
     
 	while(1)
     {
@@ -155,7 +155,7 @@ void update(void)
             if(entity_collides(pl, ent))
             {
 				player->life-=1;
-				player->points-=175.0f;
+				player->points-=3*player->points/4;
 				player->x = 1.0f;
 				player->y = 1.0f;
 				player->x_dir = 0.0f;
