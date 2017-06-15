@@ -22,7 +22,7 @@ static void render_to_buffer(char screen[24][80], int px, int py, char c);
 
 int main(int argc, char* argv[])
 {
-    int i, extra, s_map, g_out;
+    int i, extra, s_map;
     entity_t* ent;
     srand(time(0));
 	
@@ -52,21 +52,22 @@ int main(int argc, char* argv[])
 	printf("4. sair;\n");
 	printf("Ola, selecione o que deseja fazer:");
 	scanf("%d", &extra);
-	g_out=0;
 	switch(extra){
 		case 1:
 			mk_edit_map(0);
 			break;
 		case 2:
 			list_map();
-			printf("selecione o que voce quer editar: ");
-			scanf("%d", &s_map);
-			mk_edit_map(s_map);
+			if (read_n_map()!=1){
+				
+				do{
+				printf("selecione o que voce quer editar: ");
+				scanf("%d", &s_map);
+				}while(s_map<1||s_map>=read_n_map());
+				mk_edit_map(s_map);
+			}
 			break;
 		case 3:
-			break;
-		case 4:
-			g_out=1;
 			break;
 	}
 	/*
@@ -77,7 +78,7 @@ int main(int argc, char* argv[])
 	*/
     c_map(map, 0, &n_food);
     
-	while(!g_out)
+	while(1)
     {
 		cli_update_keys();
         update();
