@@ -46,12 +46,13 @@ int main(int argc, char* argv[])
 	*para a função c_map carregar o mapa escolhido
 	*função de criar entra logo abaixo
 	*/
-	printf("1. Criar mapa;\n");
-	printf("2. editar mapa;\n");
-	printf("3. jogar;\n");
-	printf("4. sair;\n");
-	printf("Ola, selecione o que deseja fazer:");
-	scanf("%d", &extra);
+	do{
+		printf("1. Criar mapa;\n");
+		printf("2. editar mapa;\n");
+		printf("3. jogar;\n");
+		printf("Ola, selecione o que deseja fazer:");
+		scanf("%d", &extra);
+	}while (extra<1||extra>3);
 	switch(extra){
 		case 1:
 			mk_edit_map(0);
@@ -59,12 +60,14 @@ int main(int argc, char* argv[])
 		case 2:
 			list_map();
 			if (read_n_map()!=1){
-				
 				do{
 				printf("selecione o que voce quer editar: ");
 				scanf("%d", &s_map);
 				}while(s_map<1||s_map>=read_n_map());
 				mk_edit_map(s_map);
+			}
+			else{
+				system("pause");
 			}
 			break;
 		case 3:
