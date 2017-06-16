@@ -22,7 +22,7 @@ static void render_to_buffer(char screen[24][80], int px, int py, char c);
 
 int main(int argc, char* argv[])
 {
-    int i, extra, s_map;
+    int i, extra;
     entity_t* ent;
     srand(time(0));
 	
@@ -46,33 +46,24 @@ int main(int argc, char* argv[])
 	*para a função c_map carregar o mapa escolhido
 	*função de criar entra logo abaixo
 	*/
-	do{
+	do{/*provisório até arrumarem um menu*/
+		system("cls");
 		printf("1. Criar mapa;\n");
 		printf("2. editar mapa;\n");
 		printf("3. jogar;\n");
 		printf("Ola, selecione o que deseja fazer:");
 		scanf("%d", &extra);
-	}while (extra<1||extra>3);
-	switch(extra){
-		case 1:
-			mk_edit_map(0);
-			break;
-		case 2:
-			list_map();
-			if (read_n_map()!=1){
-				do{
-				printf("selecione o que voce quer editar: ");
-				scanf("%d", &s_map);
-				}while(s_map<1||s_map>=read_n_map());
-				mk_edit_map(s_map);
-			}
-			else{
-				system("pause");
-			}
-			break;
-		case 3:
-			break;
-	}
+		switch(extra){
+			case 1:
+				list_map('m');
+				break;
+			case 2:
+				list_map('e');
+				break;
+			default:
+				break;
+		}
+	}while (extra!=3);
 	/*
 	*função para selecionar o mapa
 	*e pegar quantidade de comida,
