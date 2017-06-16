@@ -206,12 +206,12 @@ void del_map(s_map){
 void map_update(char b_map[23][80], m_cursor *cursor, int *g_out, int *n_food, char *m_block){
 	if(keyhold(KEY_UP)){
 		(*cursor).y--;
-		if (!(*cursor).y||((*cursor).x>=0&&(*cursor).x<=5)||((*cursor).x<=78&&(*cursor).x>=73)||((*cursor).y==12&&(*cursor).x<=41&&(*cursor).x>=35))
+		if (!(*cursor).y||((((*cursor).x>=0&&(*cursor).x<=5)||((*cursor).x<=78&&(*cursor).x>=73))&&((*cursor).y==14||(*cursor).y==10))||((*cursor).y==12&&(*cursor).x<=41&&(*cursor).x>=35))
 			(*cursor).y++; 
 	}
 	else if(keyhold(KEY_DOWN)){
 		(*cursor).y++;
-		if ((*cursor).y==22||((*cursor).x>=0&&(*cursor).x<=5)||((*cursor).x<=78&&(*cursor).x>=73)||((*cursor).y==10&&(*cursor).x<=41&&(*cursor).x>=35))
+		if ((*cursor).y==22||((((*cursor).x>=0&&(*cursor).x<=5)||((*cursor).x<=78&&(*cursor).x>=73))&&((*cursor).y==12||(*cursor).y==8))||((*cursor).y==10&&(*cursor).x<=41&&(*cursor).x>=35))
 			(*cursor).y--;
 	}
 	else if(keyhold(KEY_LEFT)){
