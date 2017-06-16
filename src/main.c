@@ -27,8 +27,8 @@ int main(int argc, char* argv[])
     srand(time(0));
 	
     player = entity_alloc(&player_list, ENTITY_PLAYER1);
-    player->x = 1.0f;
-    player->y = 1.0f;
+    player->x = 38.0f;
+    player->y = 13.0f;
     player->points = 0.0f;
 	player->life=3;
 	
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 	*no momento esta selecionando o
 	*mapa 0, padrão.
 	*/
-    c_map(map, 1, &n_food);
+    c_map(map, 0, &n_food);
     
 	while(1)
     {
@@ -134,7 +134,7 @@ void update(void)
 		player->x += player->x_dir;
 		player->y += player->y_dir;
 	}
-	if (map[(int)player->y][(int)player->x]==35){
+	if (map[(int)player->y][(int)player->x]==35||map[(int)player->y][(int)player->x]==45){
 		player->x -= player->x_dir;
 		player->y -= player->y_dir;
 	} else {
@@ -156,8 +156,8 @@ void update(void)
             {
 				player->life-=1;
 				player->points-=3*player->points/4;
-				player->x = 1.0f;
-				player->y = 1.0f;
+				player->x = 38.0f;
+				player->y = 13.0f;
 				player->x_dir = 0.0f;
 				player->y_dir = 0.0f;
 				if (player->life==0){

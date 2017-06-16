@@ -51,8 +51,8 @@ void mk_edit_map(int s_map){
 	char b_map[23][80], m_block;
 	edit_cursor cursor;
 	
-	cursor.x = 1;
-	cursor.y = 1;
+	cursor.x = 38;
+	cursor.y = 13;
 	
 	g_out = 0;
 	
@@ -155,22 +155,22 @@ void del_map(s_map){
 void m_update(char b_map[23][80], edit_cursor *cursor, int *g_out, int *n_food, char *m_block){
 	if(keyhold(KEY_UP)){
 		(*cursor).y--;
-		if (!(*cursor).y||!(*cursor).x||(*cursor).x==78)
+		if (!(*cursor).y||((*cursor).x>=0&&(*cursor).x<=5)||((*cursor).x<=78&&(*cursor).x>=73)||((*cursor).y==12&&(*cursor).x<=41&&(*cursor).x>=35))
 			(*cursor).y++; 
 	}
 	else if(keyhold(KEY_DOWN)){
 		(*cursor).y++;
-		if ((*cursor).y==22||!(*cursor).x||(*cursor).x==78)
+		if ((*cursor).y==22||((*cursor).x>=0&&(*cursor).x<=5)||((*cursor).x<=78&&(*cursor).x>=73)||((*cursor).y==10&&(*cursor).x<=41&&(*cursor).x>=35))
 			(*cursor).y--;
 	}
 	else if(keyhold(KEY_LEFT)){
 		(*cursor).x--;
-		if (!(*cursor).x&&(*cursor).y!=11)
+		if ((!(*cursor).x&&(*cursor).y!=11)||((*cursor).x==5&&(((*cursor).y<=10&&(*cursor).y>=8)||((*cursor).y>=12&&(*cursor).y<=14)))||((*cursor).y>=10&&(*cursor).y<=12&&(*cursor).x==41))
 			(*cursor).x++;
 	}
 	else if(keyhold(KEY_RIGHT)){
 		(*cursor).x++;
-		if ((*cursor).x==78&&(*cursor).y!=11)
+		if (((*cursor).x==78&&(*cursor).y!=11)||((*cursor).x==73&&(((*cursor).y<=10&&(*cursor).y>=8)||((*cursor).y>=12&&(*cursor).y<=14)))||((*cursor).y>=10&&(*cursor).y<=12&&(*cursor).x==35))
 			(*cursor).x--; 
 	}
 	
@@ -221,7 +221,7 @@ void m_render(char b_map[23][80], edit_cursor cursor, char *m_block){
 	if (*m_block=='\0')
 		sprintf(screen[23], "NO BLOCKS MARKED    PRESS ' ', '*', '#' TO MARK THE BLOCK   PRESS ENTER TO SAVE", *m_block);
 	else
-		sprintf(screen[23], "Marked Block: '%c'           PRESS ESCAPE TO UNMARK BLOCK    PRESS ENTER TO SAVE", *m_block);
+		sprintf(screen[23], "Marked Block: '%c'               PRESS ESC TO UNMARK BLOCK   PRESS ENTER TO SAVE", *m_block);
 	
 	cli_render(screen);
 }
