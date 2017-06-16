@@ -1,16 +1,9 @@
-﻿#MAPAS DO JOGO
+﻿#MENU FUNÇÕES MAPS
 
 ##Especificações
 
-###Arquivos map%d.txt:
+###Arquivo background.txt:
 
 ```
-"número de linhas" "número de colunas" "número de frutas"
-"mapa"
+"background screen"
 ```
-
-Onde map0.txt é o padrão, para testes e base de criação de mapas.
-
-###Arquivo n_map.txt:
-
-Contém a quantidade de mapas na pasta.
