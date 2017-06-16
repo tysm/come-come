@@ -16,3 +16,7 @@ set(PACMAN_SRC
 )
 
 add_executable(come-come ${PACMAN_SRC})
+add_custom_command(TARGET come-come POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/maps $<TARGET_FILE_DIR:come-come>/maps)
+add_custom_command(TARGET come-come POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/map_menu $<TARGET_FILE_DIR:come-come>/map_menu)

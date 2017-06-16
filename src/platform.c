@@ -57,6 +57,15 @@ void cli_update_keys(void)
         {
             switch(c1)
             {
+				case 42:
+					keys_now[KEY_STAR] = 1;
+					break;
+				case 35:
+					keys_now[KEY_HASH] = 1;
+					break;
+				case 32:
+					keys_now[KEY_SPACE] = 1;
+					break;
                 case 27:
                     keys_now[KEY_ESCAPE] = 1;
                     break;

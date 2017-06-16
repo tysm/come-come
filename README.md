@@ -17,13 +17,7 @@ Estando na pasta principal do projeto, rode:
 mkdir build
 cd build
 cmake ..
-**mkdir maps**
-**cd..**
-**xcopy maps "build\\maps" /E**
 ```
-`
--**Comandos em negrito devem ser efetuados a cada pull feito**
-`
 
 ### Compilando
 
