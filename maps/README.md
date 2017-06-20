@@ -1,16 +1,16 @@
-# MAPAS DO JOGO
+# Game Maps
 
-## Especificações
+## Specification
 
-### Arquivos map%d.txt:
+### Files map%d.txt:
 
 ```
-"número de linhas" "número de colunas" "número de frutas"
-"mapa"
+"line count" "column count" "fruits count"
+"map"
 ```
 
-Onde map0.txt é o padrão, para testes e base de criação de mapas.
+Where map0.txt is default map for tests and as a template for creating maps.
 
-### Arquivo n_map.txt:
+### File n_map.txt:
 
-Contém a quantidade de mapas na pasta.
+Map count in folder.
