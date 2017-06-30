@@ -29,10 +29,10 @@ void c_map(char map[23][80], int s_map, int *n_food){
 	int l, c, i, j;
 	char f_map[30];
 	
-	j = sprintf(f_map, "maps\\map%d.txt", s_map);
+	j = sprintf(f_map, "maps/map%d.txt", s_map);
 	
 	file = fopen(f_map, "r");
-	fscanf(file, "%d%d%d", &l, &c, &*n_food);
+	fscanf(file, "%d%d%d", &l, &c, n_food);
 	
 	fseek(file, 2, SEEK_CUR);
 	for (i = 0; i < l; i++){
@@ -82,7 +82,7 @@ void mk_edit_map(int s_map, char function){
 int read_n_map(void){
 	FILE *file;
 	int n_map;
-	file = fopen("maps\\n_map.txt", "r");
+	file = fopen("maps/n_map.txt", "r");
 	fscanf(file, "%d", &n_map);
 	fclose(file);
 	
@@ -98,7 +98,7 @@ void list_map(char function){
 	char background[24][80];
 	m_cursor cursor;
 	
-	file = fopen("map_menu\\background.txt", "r");
+	file = fopen("map_menu/background.txt", "r");
 	for (i=0; i<23; i++){
 		for(j=0; j<80; j++){
 			fscanf(file, "%c", &background[i][j]);
@@ -106,7 +106,7 @@ void list_map(char function){
 	}
 	fclose(file);
 	j = sprintf(&background[20][63], ".VOLTAR");
-	j = sprintf(&background[23][0], "PRESS UP/DOWN TO MOVE CURSOR                              PRESS ENTER TO SELECT\n");
+	j = sprintf(&background[23][0], "PRESS UP/DOWN TO MOVE CURSOR                              PRESS ENTER TO SELECT");
 	
 	n_map = read_n_map();
 	g_out = 0;
@@ -169,17 +169,17 @@ void save_map(char b_map[23][80], int s_map, int n_food){
 	int i, j, n_map;
 	
 	if (s_map){
-		j = sprintf(f_map, "maps\\map%d.txt", s_map);
+		j = sprintf(f_map, "maps/map%d.txt", s_map);
 	}
 	
 	else{
 		n_map = read_n_map();
 		
-		file = fopen("maps\\n_map.txt", "w");
+		file = fopen("maps/n_map.txt", "w");
 		fprintf(file, "%d", n_map+1);
 		fclose(file);
 		
-		j = sprintf(f_map, "maps\\map%d.txt", n_map);
+		j = sprintf(f_map, "maps/map%d.txt", n_map);
 	}
 	
 	file = fopen(f_map, "w");
@@ -204,32 +204,52 @@ void del_map(s_map){
 *Funções úteis
 */
 void map_update(char b_map[23][80], m_cursor *cursor, int *g_out, int *n_food, char *m_block){
+	/**
+	*Util para alterar o estado logico do 'pacman'
+	*no modo de ediçao/criaçao de mapas
+	*/
+	
+	/*
+	*Alterando a posiçao do personagem
+	*Como no modo ediçao/criaçao a colisao e ativa
+	*Somente com as paredes principais(bordas e spam dos ghosts)
+	*A implementaçao ficou cheia de restriçoes
+	*/
 	if(keyhold(KEY_UP)){
-		(*cursor).y--;
-		if (!(*cursor).y||((((*cursor).x>=0&&(*cursor).x<=5)||((*cursor).x<=78&&(*cursor).x>=73))&&((*cursor).y==14||(*cursor).y==10))||((*cursor).y==12&&(*cursor).x<=41&&(*cursor).x>=35))
-			(*cursor).y++; 
+		cursor->y--;
+		if (!cursor->y||(((cursor->x>=0&&cursor->x<=5)||(cursor->x<=78&&cursor->x>=73))&&(cursor->y==14||cursor->y==10))||(cursor->y==12&&cursor->x<=41&&cursor->x>=35))
+			cursor->y++; 
 	}
 	else if(keyhold(KEY_DOWN)){
-		(*cursor).y++;
-		if ((*cursor).y==22||((((*cursor).x>=0&&(*cursor).x<=5)||((*cursor).x<=78&&(*cursor).x>=73))&&((*cursor).y==12||(*cursor).y==8))||((*cursor).y==10&&(*cursor).x<=41&&(*cursor).x>=35))
-			(*cursor).y--;
+		cursor->y++;
+		if (cursor->y==22||(((cursor->x>=0&&cursor->x<=5)||(cursor->x<=78&&cursor->x>=73))&&(cursor->y==12||cursor->y==8))||(cursor->y==10&&cursor->x<=41&&cursor->x>=35))
+			cursor->y--;
 	}
 	else if(keyhold(KEY_LEFT)){
-		(*cursor).x--;
-		if ((!(*cursor).x&&(*cursor).y!=11)||((*cursor).x==5&&(((*cursor).y<=10&&(*cursor).y>=8)||((*cursor).y>=12&&(*cursor).y<=14)))||((*cursor).y>=10&&(*cursor).y<=12&&(*cursor).x==41))
-			(*cursor).x++;
+		cursor->x--;
+		if ((!cursor->x&&cursor->y!=11)||(cursor->x==5&&((cursor->y<=10&&cursor->y>=8)||(cursor->y>=12&&cursor->y<=14)))||(cursor->y>=10&&cursor->y<=12&&cursor->x==41))
+			cursor->x++;
 	}
 	else if(keyhold(KEY_RIGHT)){
-		(*cursor).x++;
-		if (((*cursor).x==78&&(*cursor).y!=11)||((*cursor).x==73&&(((*cursor).y<=10&&(*cursor).y>=8)||((*cursor).y>=12&&(*cursor).y<=14)))||((*cursor).y>=10&&(*cursor).y<=12&&(*cursor).x==35))
-			(*cursor).x--; 
+		cursor->x++;
+		if ((cursor->x==78&&cursor->y!=11)||(cursor->x==73&&((cursor->y<=10&&cursor->y>=8)||(cursor->y>=12&&cursor->y<=14)))||(cursor->y>=10&&cursor->y<=12&&cursor->x==35))
+			cursor->x--; 
 	}
 	
-	if ((*cursor).y==11&&(*cursor).x==-1)
-		(*cursor).x = 78;
-	else if ((*cursor).y==11&&(*cursor).x==79)
-		(*cursor).x = 0;
+	/*
+	*O portal tambem deve funcionar durante este modo
+	*/
+	if (cursor->y==11&&cursor->x==-1)
+		cursor->x = 78;
+	else if (cursor->y==11&&cursor->x==79)
+		cursor->x = 0;
 	
+	/*
+	*Teclas especiais que servem para:
+	*Seleçao do bloco que o jogador deseja
+	*Spawnar nas proximas posiçoes 
+	*E para desselecionar ou Sair da ediçao
+	*/
 	if(keyhold(KEY_STAR)){
 		*m_block = '*';
 	}
@@ -246,15 +266,19 @@ void map_update(char b_map[23][80], m_cursor *cursor, int *g_out, int *n_food, c
 		*g_out=1;
 	}
 	
+	/*
+	*Contador de frutinhas restantes/alteradas no mapa
+	*Tambem altera o bloco na posiçao atual do 'pacman'
+	*/
 	if (*m_block!='\0'){
 		if (*m_block=='*'){
-			if (b_map[(*cursor).y][(*cursor).x]!='*')
+			if (b_map[cursor->y][cursor->x]!='*')
 				(*n_food)++;
 		}
-		else if (b_map[(*cursor).y][(*cursor).x]=='*')
+		else if (b_map[cursor->y][cursor->x]=='*')
 			(*n_food)--;
 		
-		b_map[(*cursor).y][(*cursor).x] = *m_block;
+		b_map[cursor->y][cursor->x] = *m_block;
 	}
 }
 void map_render(char b_map[23][80], m_cursor cursor, char *m_block){
@@ -276,30 +300,46 @@ void map_render(char b_map[23][80], m_cursor cursor, char *m_block){
 	cli_render(screen);
 }
 void menu_map_update(m_cursor *cursor, int *s_option, int n_option, int *g_out, char function){
+	/**
+	*Util para alterar o estado logico do 'cursor'
+	*Durante a seleçao de mapas para editar/criar
+	*Futuramente sera util para outras funçoes MAPS
+	*
+	*e=edit mode
+	*m=make mode
+	*s_option e a opçao que o usuario vai selecionar
+	*Em 'e' e 'm' essa opçao se refere aos mapas que
+	*Serao editados ou servirao de base para um novo mapa
+	*/
+	
+	/*
+	*Alterando o estado logico do 'cursor'
+	*De acordo com o modo selecionado anteriormente
+	*/
 	if (!((function=='e'&&n_option==1)||(function=='m'&&n_option==15))){
 		if (keyhold(KEY_UP)){
-			(*cursor).y--;
+			cursor->y--;
 			(*s_option)--;
-			if ((*cursor).y==19){
-				(*cursor).y = 2+n_option;
-				(*cursor).x = 12;
+			if (cursor->y==19){
+				cursor->y = 2+n_option;
+				cursor->x = 12;
 				*s_option = n_option-1;
 			}
-			else if ((*cursor).y==3){
-				(*cursor).y++;
+			else if (cursor->y==3){
+				cursor->y++;
 				(*s_option)++;
 			}
 		}
 		else if (keyhold(KEY_DOWN)){
-			(*cursor).y++;
+			cursor->y++;
 			(*s_option)++;
-			if ((*cursor).y==19||*s_option==n_option){
-				(*cursor).y = 20;
-				(*cursor).x = 62;
+			if (cursor->y==19||*s_option==n_option){
+				cursor->y = 20;
+				cursor->x = 62;
 				*s_option = 16;
 			}
-			else if ((*cursor).y==21){
-				(*cursor).y--;
+			else if (cursor->y==21){
+				cursor->y--;
 				(*s_option)--;
 			}
 		}
