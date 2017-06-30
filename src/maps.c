@@ -27,17 +27,19 @@ void m_sync(void);
 void c_map(char map[23][80], int s_map, int *n_food){
 	FILE *file;
 	int l, c, i, j;
-	char f_map[30];
+	char f_map[30], lixo;
 	
 	j = sprintf(f_map, "maps/map%d.txt", s_map);
 	
 	file = fopen(f_map, "r");
 	fscanf(file, "%d%d%d", &l, &c, n_food);
 	
-	fseek(file, 2, SEEK_CUR);
+	lixo = fgetc(file);
+	while (lixo!='\n')
+		lixo = fgetc(file);
 	for (i = 0; i < l; i++){
 		for (j = 0; j < c; j++){
-			fscanf(file, "%c", &map[i][j]);
+			map[i][j]=fgetc(file);
 		}
 	}
 	fclose(file);
