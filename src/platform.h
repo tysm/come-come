@@ -16,6 +16,9 @@ typedef enum key_id
     KEY_RIGHT,
     KEY_ENTER,
     KEY_ESCAPE,
+	KEY_HASH,
+	KEY_STAR,
+	KEY_SPACE,
     KEY_MAX
 } key_id_t;
 

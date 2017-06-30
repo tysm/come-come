@@ -7,6 +7,7 @@
 #include "maps.h"
 
 static char map[23][80];
+int n_food;
 
 entity_t* player;
 entity_t* player_list = NULL;
@@ -21,13 +22,13 @@ static void render_to_buffer(char screen[24][80], int px, int py, char c);
 
 int main(int argc, char* argv[])
 {
-    int i;
+    int i, extra;
     entity_t* ent;
     srand(time(0));
 	
     player = entity_alloc(&player_list, ENTITY_PLAYER1);
-    player->x = 1.0f;
-    player->y = 1.0f;
+    player->x = 38.0f;
+    player->y = 13.0f;
     player->points = 0.0f;
 	player->life=3;
 	
@@ -39,11 +40,37 @@ int main(int argc, char* argv[])
     }
 	
 	/*
-	*função para selecionar o mapa,
+	*criar função para o player decidir
+	*se vai criar/editar/excluir/jogar
+	*se for jogar devemos pedir o parametro s_map
+	*para a função c_map carregar o mapa escolhido
+	*função de criar entra logo abaixo
+	*/
+	do{/*provisório até arrumarem um menu*/
+		system("cls");
+		printf("1. Criar mapa;\n");
+		printf("2. editar mapa;\n");
+		printf("3. jogar;\n");
+		printf("Ola, selecione o que deseja fazer:");
+		scanf("%d", &extra);
+		switch(extra){
+			case 1:
+				list_map('m');
+				break;
+			case 2:
+				list_map('e');
+				break;
+			default:
+				break;
+		}
+	}while (extra!=3);
+	/*
+	*função para selecionar o mapa
+	*e pegar quantidade de comida,
 	*no momento esta selecionando o
 	*mapa 0, padrão.
 	*/
-    c_map(map, 0);
+    c_map(map, 0, &n_food);
     
 	while(1)
     {
@@ -94,18 +121,21 @@ void update(void)
 		player->x = 78.0f;
 	else if (player->y==11&&player->x==78&&player->x_dir==1)
 		player->x = 0.0f;
-	
 	else {
 		player->x += player->x_dir;
 		player->y += player->y_dir;
 	}
-	if (map[(int)player->y][(int)player->x]==35){
+	if (map[(int)player->y][(int)player->x]==35||map[(int)player->y][(int)player->x]==45){
 		player->x -= player->x_dir;
 		player->y -= player->y_dir;
 	} else {
 		if (map[(int)player->y][(int)player->x]==42){
 			player->points += 100.0f;
 			map[(int)player->y][(int)player->x]=' ';
+			n_food--;
+			if (!n_food)
+				/*TODO, mas isso é tipo um game over*/
+				exit(0);
 		}
 	}
 	
@@ -116,9 +146,9 @@ void update(void)
             if(entity_collides(pl, ent))
             {
 				player->life-=1;
-				player->points-=175.0f;
-				player->x = 1.0f;
-				player->y = 1.0f;
+				player->points-=3*player->points/4;
+				player->x = 38.0f;
+				player->y = 13.0f;
 				player->x_dir = 0.0f;
 				player->y_dir = 0.0f;
 				if (player->life==0){
