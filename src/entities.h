@@ -1,6 +1,26 @@
 #pragma once
 
 /**
+ * Tipos de poderes (habilidades) no jogo.
+ */
+typedef enum power_up_id{
+	BRAKE_WALL/*,
+	FREEZE,
+	FUCK_YOU,
+	KAMEHAMEHA,
+	SPEED_UP,
+	TELEPORT*/
+} power_up_id_t;
+
+/**
+ * Estrutura de queue de poderes de cada personagem (NPC).
+ */
+typedef struct powers_queue{
+	power_up_id_t power;
+	struct powers_queue* next;
+}powers_queue_t;
+
+/**
  * Tipos de entidades (NPCs) no jogo.
  */
 typedef enum entity_type

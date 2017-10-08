@@ -21,7 +21,8 @@ entity_t* entity_alloc(entity_t** head, entity_type_t type)
     
     p->next = p->prev = NULL;
     p->type = type;
-    p->x = p->y = 0.0f;
+	p->x = 38.0f;
+	p->y = 13.0f;
     p->x_dir = p->y_dir = 0.0f;
 
     entity_add(head, p);
