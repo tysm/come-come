@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "platform.h"
-#include "entities.h"
+#include "powers.h"
 #include "maps.h"
 
 static char map[23][80];
@@ -13,6 +13,8 @@ entity_t* player;
 entity_t* player_list = NULL;
 
 entity_t* enemy_list = NULL;
+
+powers_queue_t *pfront = NULL, *pend = NULL;
 
 void update(void);
 void render(void);
@@ -24,13 +26,16 @@ int main(int argc, char* argv[])
 {
     int i, extra;
     entity_t* ent;
+	
+	power_up_id_t power = BRAKE_WALL;
+	
     srand(time(0));
 	
     player = entity_alloc(&player_list, ENTITY_PLAYER1);
-    player->x = 38.0f;
-    player->y = 13.0f;
     player->points = 0.0f;
 	player->life=3;
+	
+	enqueue(&pend, &pfront, power);
 	
     for(i = ENTITY_GHOST_START; i <= ENTITY_GHOST_END; ++i)
     {
@@ -116,6 +121,8 @@ void update(void)
 		player->x_dir = 1.0f;
 		player->y_dir = 0.0f; 
 	}
+	else if(keyhold(KEY_SPACE))
+		power_caller(map, &player, &pfront);
 	
 	if (player->y==11&&player->x==0&&player->x_dir==-1)
 		player->x = 78.0f;

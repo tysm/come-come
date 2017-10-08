@@ -49,6 +49,7 @@ typedef struct entity
     struct entity *next, *prev;
     
     entity_type_t type;
+	/* powers_queue_t *front, *end; */
 	int life;
     float x, y, x_dir, y_dir, points;
 

@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "platform.h"
-#include "entities.h"
-#include "maps.h"
 
 typedef struct {
 	int x;
@@ -79,7 +76,7 @@ void mk_edit_map(int s_map, char function){
 
 /**
 *Lê a quantidade
-*de mapas no arquibo n_map.txt
+*de mapas no arquivo n_map.txt
 */
 int read_n_map(void){
 	FILE *file;
