@@ -23,7 +23,7 @@ On the project root, run the following commands:
 ```
 mkdir build
 cd build
-cmake ..
+cmake -G "MinGW Makefiles" ..
 ```
 
 Then you may run the following to build the project:

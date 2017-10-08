@@ -36,9 +36,13 @@ void brake_wall(char map[23][80], entity_t* player){
 		}
 }
 void power_caller(char map[23][80], entity_t** player, powers_queue_t** front){
+	if (*front == NULL)
+		return;
 	switch((*front)->power){
 		case BRAKE_WALL:
 			brake_wall(map, *player);
+			break;
+		default:
 			break;
 	}
 	dequeue(front);

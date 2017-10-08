@@ -14,6 +14,7 @@ entity_t* player_list = NULL;
 
 entity_t* enemy_list = NULL;
 
+/* provisorio para testes */
 powers_queue_t *pfront = NULL, *pend = NULL;
 
 void update(void);
@@ -35,6 +36,7 @@ int main(int argc, char* argv[])
     player->points = 0.0f;
 	player->life=3;
 	
+	/* provisorio para testes */
 	enqueue(&pend, &pfront, power);
 	
     for(i = ENTITY_GHOST_START; i <= ENTITY_GHOST_END; ++i)
@@ -56,7 +58,7 @@ int main(int argc, char* argv[])
 		printf("1. Criar mapa;\n");
 		printf("2. editar mapa;\n");
 		printf("3. jogar;\n");
-		printf("Ola, selecione o que deseja fazer:");
+		printf("Ola, selecione o que deseja fazer: ");
 		scanf("%d", &extra);
 		switch(extra){
 			case 1:
